@@ -1,0 +1,7 @@
+{
+  "target_url": "https://your-tenant.feishu.cn/next/messenger/",
+  "cookies": "local-data/feishu-cookies.json",
+  "output": "local-data/thread-crawl/latest.md",
+  "append_if_new": "local-data/thread-crawl/raw.md",
+  "report": "local-data/thread-crawl/report.json"
+}

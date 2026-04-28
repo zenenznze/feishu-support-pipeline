@@ -1,0 +1,6 @@
+{
+  "root_token": "YOUR_WIKI_NODE_TOKEN",
+  "wiki_base_url": "https://your-tenant.feishu.cn/wiki/",
+  "outdir": "local-data/wiki-sync",
+  "as_user": "bot"
+}

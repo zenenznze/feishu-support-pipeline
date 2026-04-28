@@ -1,0 +1,11 @@
+.env
+.env.*
+!.env.example
+local-data/
+exports/
+*.cookies.json
+*cookie*.json
+*.fetch.json
+node_modules/
+__pycache__/
+.DS_Store
