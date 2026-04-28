@@ -4,7 +4,7 @@
   "private": false,
   "type": "module",
   "scripts": {
-    "check": "node --check scripts/crawl_feishu_threads.mjs && node --check scripts/crawl_feishu_threads_playwright.mjs && node --check scripts/thread_store.mjs && node --check scripts/browser_backend.mjs && node --check scripts/analysis_gate.mjs"
+    "check": "node --check scripts/crawl_feishu_threads.mjs && node --check scripts/crawl_feishu_threads_playwright.mjs && node --check scripts/thread_store.mjs && node --check scripts/browser_backend.mjs && node --check scripts/analysis_gate.mjs && node --check scripts/generate_daily_support_log.mjs"
   },
   "optionalDependencies": {
     "playwright": "^1.52.0"

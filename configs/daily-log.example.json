@@ -1,0 +1,8 @@
+{
+  "threads_dir": "local-data/thread-crawl/by-date/2026-01-01/thread-files",
+  "input": "local-data/thread-crawl/raw.md",
+  "date": "2026-01-01",
+  "mode": "faq",
+  "product_name": "你的产品名",
+  "output": "local-data/support-logs/2026-01-01-faq.md"
+}
