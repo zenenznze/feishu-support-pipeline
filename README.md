@@ -23,6 +23,8 @@
 4. 基于抓到的线程生成每日客服日志、FAQ 或内部复盘初稿。
 5. 将生成结果放在 `local-data/` 下，供人工复核后再进入知识库或客服机器人。
 
+需要明确的是：这里开源的是“可复用的抓取逻辑和管线结构”，不是某个具体业务现场的完整生产配置。真实项目通常还需要配置具体租户 URL、目标群聊名称、页面选择器、滚动范围和日期范围。详见 `docs/customizing-feishu-crawler.md`。
+
 ## 已包含内容
 
 - 通用版飞书 / Lark Wiki 递归同步脚本：`scripts/sync_lark_docs.py`
@@ -32,6 +34,7 @@
 - 线程存储、去重、格式化工具：`scripts/thread_store.mjs`
 - 增量判断脚本：`scripts/analysis_gate.mjs`
 - 每日客服日志 / FAQ / 内部复盘生成脚本：`scripts/generate_daily_support_log.mjs`
+- 抓取器适配说明：`docs/customizing-feishu-crawler.md`
 - 仓库内置 skill 文档：`skills/feishu-support-pipeline/SKILL.md`
 - 示例配置和假样例输出
 - 安全与隐私说明
@@ -76,6 +79,8 @@ LARK_SYNC_OUTDIR=local-data/wiki-sync
 FEISHU_MESSENGER_URL=https://your-tenant.feishu.cn/next/messenger/
 FEISHU_COOKIES_FILE=local-data/feishu-cookies.json
 FEISHU_CDP_CLIENT=/path/to/cdp-client.mjs
+FEISHU_TARGET_CHAT_NAME=your support group name
+FEISHU_MAX_THREADS=80
 ```
 
 ## 流程一：同步飞书 / Lark Wiki 文档
@@ -111,6 +116,8 @@ node scripts/crawl_feishu_threads.mjs \
   --browser-mode playwright \
   --cookies local-data/feishu-cookies.json \
   --target-url https://your-tenant.feishu.cn/next/messenger/ \
+  --chat-name "your support group name" \
+  --max-threads 20 \
   --output local-data/thread-crawl/latest.md \
   --append-if-new local-data/thread-crawl/raw.md \
   --report local-data/thread-crawl/report.json
@@ -124,6 +131,8 @@ node scripts/crawl_feishu_threads.mjs \
 node scripts/crawl_feishu_threads.mjs \
   --browser-mode cdp \
   --cdp-client /path/to/cdp-client.mjs \
+  --chat-name "your support group name" \
+  --max-threads 20 \
   --output local-data/thread-crawl/latest.md \
   --append-if-new local-data/thread-crawl/raw.md \
   --report local-data/thread-crawl/report.json
@@ -133,11 +142,13 @@ node scripts/crawl_feishu_threads.mjs \
 
 - `latest.md`：本次可见范围内抓到的线程。
 - `raw.md`：长期累计的线程库，按 thread key 去重更新。
-- `report.json`：本次抓取报告，包括可见线程数、新增线程数、更新线程数和错误列表。
+- `report.json`：本次抓取报告，包括目标群聊选择结果、实际使用的选择器、可见线程数、新增线程数、更新线程数和错误列表。
 
 重要限制：
 
 - 该脚本抓取的是前端当前可加载 / 可见范围内的线程，不等同于飞书服务端绝对全量历史。
+- 通用版默认选择器只是起点，不保证适配所有租户和所有飞书版本。
+- 如果 `chat_selection.selected` 为 `false`、`visible_threads` 为 0，或 `captured_threads` 为 0，需要按 `docs/customizing-feishu-crawler.md` 调整目标群聊名称和页面选择器。
 - 如果要做完整历史归档，需要先在飞书主消息区滚动到目标时间范围，再分批抓取。
 - 抓取后仍需人工复核，尤其是客户隐私、订单号、账号、截图链接和内部口径。
 

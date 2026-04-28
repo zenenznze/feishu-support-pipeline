@@ -1,7 +1,15 @@
 {
   "target_url": "https://your-tenant.feishu.cn/next/messenger/",
+  "target_chat_name": "your support group name",
   "cookies": "local-data/feishu-cookies.json",
   "output": "local-data/thread-crawl/latest.md",
   "append_if_new": "local-data/thread-crawl/raw.md",
-  "report": "local-data/thread-crawl/report.json"
+  "report": "local-data/thread-crawl/report.json",
+  "max_threads": 80,
+  "selectors": {
+    "chat_list_item": ".feed-main-list [role=\"listitem\"], .feed-main-list .feed-card, .a11y_feed_card_item",
+    "thread_card": ".a11y_feed_card_item",
+    "thread_panel": ".groupDetail_content--ThreadDetailPage",
+    "thread_panel_body": ".groupDetailBody"
+  }
 }
